@@ -1601,25 +1601,7 @@
   // VIEW APPLICATION
   function viewApp(i) {
     var a = applications[i];
-    alert(
-      'NAME: ' + a.full_name +
-      '
-EMAIL: ' + a.email +
-      '
-PHONE: ' + a.phone +
-      '
-ROLE: ' + a.role +
-      '
-EXPERIENCE: ' + a.experience +
-      '
-SKILLS: ' + a.skills +
-      '
-PORTFOLIO: ' + (a.portfolio || 'N/A') +
-      '
-
-MOTIVATION:
-' + a.motivation
-    );
+    alert('NAME: ' + a.full_name + ' | EMAIL: ' + a.email + ' | PHONE: ' + a.phone + ' | ROLE: ' + a.role + ' | EXPERIENCE: ' + a.experience + ' | SKILLS: ' + a.skills + ' | PORTFOLIO: ' + (a.portfolio || 'N/A') + ' | MOTIVATION: ' + a.motivation);
   }
 
   // SUBMIT APPLICATION
