@@ -1509,10 +1509,27 @@ function renderApplications(){
     tbody.innerHTML="<tr><td colspan=7 style='text-align:center;color:#aaa;padding:40px'>No applications yet.</td></tr>";
     updateAdminStats();return;
   }
-  tbody.innerHTML=applications.map((a,i)=>"<tr><td>"+(i+1)+"</td><td><strong>"+a.full_name+"</strong><br><small>"+a.email+"</small></td><td>"+a.role+"</td><td>"+a.experience+"</td><td>"+new Date(a.created_at).toLocaleDateString()+"</td><td><span class='status-badge status-"+a.status+"'>" +a.status+"</span></td><td><button class='action-btn btn-view' onclick='viewApp("+i+")'>View</button> <button class='action-btn btn-approve' onclick='updateAppStatus("+JSON.stringify(a.id)+",\'approved\')'>✓</button> <button class='action-btn btn-reject' onclick='updateAppStatus("+JSON.stringify(a.id)+",\'rejected\')'>✗</button></td></tr>").join("");
+  tbody.innerHTML=applications.map(function(a,i){
+    var id = a.id;
+    var row = '<tr>';
+    row += '<td>'+(i+1)+'</td>';
+    row += '<td><strong>'+a.full_name+'</strong><br><small>'+a.email+'</small></td>';
+    row += '<td>'+a.role+'</td>';
+    row += '<td>'+a.experience+'</td>';
+    row += '<td>'+new Date(a.created_at).toLocaleDateString()+'</td>';
+    row += '<td><span class="status-badge status-'+a.status+'">'+a.status+'</span></td>';
+    row += '<td>';
+    row += '<button class="action-btn btn-view" onclick="viewApp('+i+')">View</button> ';
+    row += '<button class="action-btn btn-approve" onclick="doApprove(''+id+'')">✓</button> ';
+    row += '<button class="action-btn btn-reject" onclick="doReject(''+id+'')">✗</button>';
+    row += '</td></tr>';
+    return row;
+  }).join('');
   updateAdminStats();
 }
 
+function doApprove(id){ updateAppStatus(id,'approved'); }
+function doReject(id){ updateAppStatus(id,'rejected'); }
 async function updateAppStatus(id,status){
   await supabaseRequest("PATCH","job_applications?id=eq."+id,{status});
   fetchApplications();showToast("Status updated!");
