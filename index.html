@@ -1575,8 +1575,8 @@
       rows += '<td><span class="status-badge status-' + a.status + '">' + a.status + '</span></td>';
       rows += '<td>';
       rows += '<button class="action-btn btn-view" onclick="viewApp(' + i + ')">View</button> ';
-      rows += '<button class="action-btn btn-approve" onclick="changeStatus('' + a.id + '', 'approved')">✓</button> ';
-      rows += '<button class="action-btn btn-reject" onclick="changeStatus('' + a.id + '', 'rejected')">✗</button>';
+      rows += '<button class="action-btn btn-approve" onclick="changeStatus(\'' + a.id + '\', \'approved\')">✓</button> ';
+      rows += '<button class="action-btn btn-reject" onclick="changeStatus(\'' + a.id + '\', \'rejected\')">✗</button>';
       rows += '</td></tr>';
     }
     tbody.innerHTML = rows;
