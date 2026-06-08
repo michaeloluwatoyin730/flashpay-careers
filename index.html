@@ -1467,110 +1467,210 @@
 <div class="toast" id="toast"></div>
 
 <script>
-const SUPABASE_URL="https://yeyoxjbsgsxugavauspx.supabase.co";
-const SUPABASE_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlleW94amJzZ3N4dWdhdmF1c3B4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU2NTE5NjEsImV4cCI6MjA5MTIyNzk2MX0.AlzBH9JnP_DDHSsQx3PAZNXILU-fy_kuGwsa_gd-Sk4";
-const ADMIN_PASSWORD="flashpay2026admin";
-let isAdminAuthenticated=false;
-let applications=[];
+  // SUPABASE CONFIG
+  const SUPABASE_URL = 'https://yeyoxjbsgsxugavauspx.supabase.co';
+  const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlleW94amJzZ3N4dWdhdmF1c3B4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU2NTE5NjEsImV4cCI6MjA5MTIyNzk2MX0.AlzBH9JnP_DDHSsQx3PAZNXILU-fy_kuGwsa_gd-Sk4';
+  const ADMIN_PASSWORD = 'flashpay2026admin';
+  let isAdminAuthenticated = false;
+  let applications = [];
 
-async function supabaseRequest(method,endpoint,body){
-  const options={method,headers:{"Content-Type":"application/json","apikey":SUPABASE_KEY,"Authorization":"Bearer "+SUPABASE_KEY,"Prefer":"return=minimal"}};
-  if(body)options.body=JSON.stringify(body);
-  const res=await fetch(SUPABASE_URL+"/rest/v1/"+endpoint,options);
-  if(method==="POST")return res.ok;
-  return res.json();
-}
+  // SCROLL REVEAL
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry, i) {
+      if (entry.isIntersecting) {
+        setTimeout(function() { entry.target.classList.add('visible'); }, i * 80);
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(function(el) { observer.observe(el); });
 
-async function fetchApplications(){
-  try{const data=await supabaseRequest("GET","job_applications?order=created_at.desc&select=*");
-  applications=data||[];renderApplications();updateAdminStats();}catch(e){}
-}
-
-function updateAdminStats(){
-  document.getElementById("totalApps").textContent=applications.length;
-  document.getElementById("newApps").textContent=applications.filter(a=>a.status==="new").length;
-  document.getElementById("approvedApps").textContent=applications.filter(a=>a.status==="approved").length;
-  document.getElementById("rejectedApps").textContent=applications.filter(a=>a.status==="rejected").length;
-}
-
-function adminLogin(){
-  const p=prompt("Enter admin password:");
-  if(p===ADMIN_PASSWORD){isAdminAuthenticated=true;fetchApplications();showToast("Admin access granted!");}
-  else showToast("Incorrect password!");
-}
-
-function renderApplications(){
-  const tbody=document.getElementById("applicationsTable");
-  if(!isAdminAuthenticated){
-    tbody.innerHTML="<tr><td colspan=7 style='text-align:center;padding:40px'><p style='color:#aaa;margin-bottom:12px'>Admin access required</p><button onclick='adminLogin()' style='background:#C8972A;color:#1A3C2E;border:none;padding:10px 24px;border-radius:100px;font-weight:700;cursor:pointer'>Login as Admin</button></td></tr>";
-    updateAdminStats();return;
+  // ROLES FILTER
+  function filterRoles(category, btn) {
+    document.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); });
+    btn.classList.add('active');
+    document.querySelectorAll('.role-card').forEach(function(card) {
+      card.style.display = (category === 'all' || card.dataset.category === category) ? 'flex' : 'none';
+    });
   }
-  if(!applications.length){
-    tbody.innerHTML="<tr><td colspan=7 style='text-align:center;color:#aaa;padding:40px'>No applications yet.</td></tr>";
-    updateAdminStats();return;
+
+  // FILE LABEL
+  function updateFileLabel(input) {
+    if (input.files && input.files[0]) {
+      document.getElementById('fileLabel').textContent = 'Selected: ' + input.files[0].name;
+    }
   }
-  tbody.innerHTML=applications.map(function(a,i){
-    var id = a.id;
-    var row = '<tr>';
-    row += '<td>'+(i+1)+'</td>';
-    row += '<td><strong>'+a.full_name+'</strong><br><small>'+a.email+'</small></td>';
-    row += '<td>'+a.role+'</td>';
-    row += '<td>'+a.experience+'</td>';
-    row += '<td>'+new Date(a.created_at).toLocaleDateString()+'</td>';
-    row += '<td><span class="status-badge status-'+a.status+'">'+a.status+'</span></td>';
-    row += '<td>';
-    row += '<button class="action-btn btn-view" onclick="viewApp('+i+')">View</button> ';
-    row += '<button class="action-btn btn-approve" onclick="doApprove(''+id+'')">✓</button> ';
-    row += '<button class="action-btn btn-reject" onclick="doReject(''+id+'')">✗</button>';
-    row += '</td></tr>';
-    return row;
-  }).join('');
+
+  // SUPABASE REQUEST
+  async function supabaseRequest(method, endpoint, body) {
+    var options = {
+      method: method,
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': SUPABASE_KEY,
+        'Authorization': 'Bearer ' + SUPABASE_KEY,
+        'Prefer': 'return=minimal'
+      }
+    };
+    if (body) options.body = JSON.stringify(body);
+    var res = await fetch(SUPABASE_URL + '/rest/v1/' + endpoint, options);
+    if (method === 'POST' || method === 'PATCH') return res.ok;
+    return res.json();
+  }
+
+  // FETCH APPLICATIONS
+  async function fetchApplications() {
+    try {
+      var data = await supabaseRequest('GET', 'job_applications?order=created_at.desc&select=*');
+      applications = data || [];
+      renderApplications();
+      updateAdminStats();
+    } catch(err) {
+      console.log('Fetch error:', err);
+    }
+  }
+
+  // UPDATE STATS
+  function updateAdminStats() {
+    document.getElementById('totalApps').textContent = applications.length;
+    document.getElementById('newApps').textContent = applications.filter(function(a) { return a.status === 'new'; }).length;
+    document.getElementById('approvedApps').textContent = applications.filter(function(a) { return a.status === 'approved'; }).length;
+    document.getElementById('rejectedApps').textContent = applications.filter(function(a) { return a.status === 'rejected'; }).length;
+  }
+
+  // ADMIN LOGIN
+  function adminLogin() {
+    var p = prompt('Enter admin password:');
+    if (p === ADMIN_PASSWORD) {
+      isAdminAuthenticated = true;
+      fetchApplications();
+      showToast('Admin access granted!');
+    } else {
+      showToast('Incorrect password!');
+    }
+  }
+
+  // RENDER APPLICATIONS
+  function renderApplications() {
+    var tbody = document.getElementById('applicationsTable');
+    if (!isAdminAuthenticated) {
+      tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:40px"><p style="color:#aaa;margin-bottom:12px">Admin access required to view applications</p><button onclick="adminLogin()" style="background:#C8972A;color:#1A3C2E;border:none;padding:10px 24px;border-radius:100px;font-weight:700;cursor:pointer;font-size:14px">Login as Admin</button></td></tr>';
+      updateAdminStats();
+      return;
+    }
+    if (!applications.length) {
+      tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:#aaa;padding:40px">No applications yet.</td></tr>';
+      updateAdminStats();
+      return;
+    }
+    var rows = '';
+    for (var i = 0; i < applications.length; i++) {
+      var a = applications[i];
+      rows += '<tr>';
+      rows += '<td>' + (i+1) + '</td>';
+      rows += '<td><strong>' + a.full_name + '</strong><br><small>' + a.email + '</small></td>';
+      rows += '<td>' + a.role + '</td>';
+      rows += '<td>' + a.experience + '</td>';
+      rows += '<td>' + new Date(a.created_at).toLocaleDateString() + '</td>';
+      rows += '<td><span class="status-badge status-' + a.status + '">' + a.status + '</span></td>';
+      rows += '<td>';
+      rows += '<button class="action-btn btn-view" onclick="viewApp(' + i + ')">View</button> ';
+      rows += '<button class="action-btn btn-approve" onclick="changeStatus('' + a.id + '', 'approved')">✓</button> ';
+      rows += '<button class="action-btn btn-reject" onclick="changeStatus('' + a.id + '', 'rejected')">✗</button>';
+      rows += '</td></tr>';
+    }
+    tbody.innerHTML = rows;
+    updateAdminStats();
+  }
+
+  // CHANGE STATUS
+  async function changeStatus(id, status) {
+    try {
+      var ok = await supabaseRequest('PATCH', 'job_applications?id=eq.' + id, { status: status });
+      if (ok) {
+        showToast('Application ' + (status === 'approved' ? 'approved!' : 'rejected!'));
+        fetchApplications();
+      } else {
+        showToast('Could not update. Try again.');
+      }
+    } catch(err) {
+      showToast('Error updating status.');
+    }
+  }
+
+  // VIEW APPLICATION
+  function viewApp(i) {
+    var a = applications[i];
+    alert(
+      'NAME: ' + a.full_name +
+      '
+EMAIL: ' + a.email +
+      '
+PHONE: ' + a.phone +
+      '
+ROLE: ' + a.role +
+      '
+EXPERIENCE: ' + a.experience +
+      '
+SKILLS: ' + a.skills +
+      '
+PORTFOLIO: ' + (a.portfolio || 'N/A') +
+      '
+
+MOTIVATION:
+' + a.motivation
+    );
+  }
+
+  // SUBMIT APPLICATION
+  async function submitApplication(e) {
+    e.preventDefault();
+    var btn = document.querySelector('.submit-btn');
+    btn.textContent = 'Submitting...';
+    btn.disabled = true;
+
+    var app = {
+      full_name: document.getElementById('fullName').value,
+      email: document.getElementById('email').value,
+      phone: document.getElementById('phone').value,
+      role: document.getElementById('role').value,
+      skills: document.getElementById('skills').value,
+      experience: document.getElementById('experience').value,
+      portfolio: document.getElementById('portfolio').value,
+      motivation: document.getElementById('motivation').value,
+      status: 'new'
+    };
+
+    try {
+      var ok = await supabaseRequest('POST', 'job_applications', app);
+      if (ok) {
+        document.getElementById('applicationForm').reset();
+        document.getElementById('fileLabel').textContent = 'Click to upload your CV';
+        showToast('Application submitted! We will be in touch within 5 working days.');
+        if (isAdminAuthenticated) fetchApplications();
+      } else {
+        showToast('Submission failed. Please try again.');
+      }
+    } catch(err) {
+      showToast('Submission failed. Please try again.');
+    }
+
+    btn.textContent = 'Submit Application';
+    btn.disabled = false;
+  }
+
+  // SHOW TOAST
+  function showToast(msg) {
+    var t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(function() { t.classList.remove('show'); }, 4000);
+  }
+
+  // INIT
+  renderApplications();
   updateAdminStats();
-}
 
-function doApprove(id){ updateAppStatus(id,'approved'); }
-function doReject(id){ updateAppStatus(id,'rejected'); }
-async function updateAppStatus(id,status){
-  await supabaseRequest("PATCH","job_applications?id=eq."+id,{status});
-  fetchApplications();showToast("Status updated!");
-}
-
-function viewApp(i){
-  const a=applications[i];
-  alert("Name: "+a.full_name+"\nEmail: "+a.email+"\nPhone: "+a.phone+"\nRole: "+a.role+"\nExperience: "+a.experience+"\nSkills: "+a.skills+"\nPortfolio: "+(a.portfolio||"N/A")+"\n\nMotivation:\n"+a.motivation);
-}
-
-async function submitApplication(e){
-  e.preventDefault();
-  const btn=document.querySelector(".submit-btn");
-  btn.textContent="Submitting...";btn.disabled=true;
-  const app={
-    full_name:document.getElementById("fullName").value,
-    email:document.getElementById("email").value,
-    phone:document.getElementById("phone").value,
-    role:document.getElementById("role").value,
-    skills:document.getElementById("skills").value,
-    experience:document.getElementById("experience").value,
-    portfolio:document.getElementById("portfolio").value,
-    motivation:document.getElementById("motivation").value,
-    status:"new"
-  };
-  try{
-    const ok=await supabaseRequest("POST","job_applications",app);
-    if(ok){document.getElementById("applicationForm").reset();document.getElementById("fileLabel").textContent="Click to upload your CV";showToast("Application submitted! We will be in touch within 5 working days.");if(isAdminAuthenticated)fetchApplications();}
-    else showToast("Submission failed. Try again.");
-  }catch(err){showToast("Submission failed. Try again.");}
-  btn.textContent="Submit Application";btn.disabled=false;
-}
-
-function showToast(msg){
-  const t=document.getElementById("toast");
-  t.textContent=msg;t.classList.add("show");
-  setTimeout(()=>t.classList.remove("show"),4000);
-}
-
-renderApplications();
-updateAdminStats();
 </script>
 </body>
 </html>
