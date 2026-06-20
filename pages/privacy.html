@@ -52,14 +52,81 @@ nav{padding:0 20px}
 .page-hero{padding:100px 20px 40px}
 .content-wrap{padding:40px 20px}
 }
+
+.nav-menu{display:flex;align-items:center;gap:4px}
+.nav-item{position:relative}
+.nav-link{color:var(--dim);text-decoration:none;font-size:14px;font-weight:500;padding:8px 14px;border-radius:8px;transition:all 0.2s;display:block;white-space:nowrap}
+.nav-link:hover{color:var(--text);background:var(--glass)}
+.nav-link.has-dropdown::after{content:' ▾';font-size:10px}
+.dropdown{position:absolute;top:100%;left:0;min-width:220px;background:rgba(13,31,24,0.98);border:1px solid var(--border);border-radius:16px;padding:8px;opacity:0;visibility:hidden;transform:translateY(8px);transition:all 0.2s;backdrop-filter:blur(20px);box-shadow:0 20px 40px rgba(0,0,0,0.4);z-index:200}
+.nav-item:hover .dropdown{opacity:1;visibility:visible;transform:translateY(4px)}
+.dropdown-item{display:flex;align-items:flex-start;gap:12px;padding:12px;border-radius:10px;text-decoration:none;transition:all 0.2s}
+.dropdown-item:hover{background:var(--glass)}
+.dropdown-icon{font-size:20px;flex-shrink:0;margin-top:2px}
+.dropdown-text-title{font-size:13px;font-weight:600;color:var(--text);display:block}
+.dropdown-text-desc{font-size:11px;color:var(--dim);display:block;margin-top:2px}
+.nav-actions{display:flex;align-items:center;gap:12px}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:8px}
+.hamburger span{width:22px;height:2px;background:var(--text);border-radius:2px}
+.mobile-nav{display:none;position:fixed;top:72px;left:0;right:0;background:rgba(13,31,24,0.98);border-bottom:1px solid var(--border);padding:20px;backdrop-filter:blur(20px);z-index:999;flex-direction:column;gap:8px}
+.mobile-nav.open{display:flex}
+.mobile-nav-link{color:var(--dim);text-decoration:none;font-size:15px;font-weight:500;padding:12px 16px;border-radius:10px;transition:all 0.2s;display:block}
+.mobile-nav-link:hover{background:var(--glass);color:var(--text)}
+.mobile-nav-btn{background:var(--gold);color:var(--dark);padding:14px 20px;border-radius:100px;font-weight:700;text-decoration:none;text-align:center;font-family:'Syne',sans-serif;margin-top:8px;display:block}
+@media(max-width:768px){.nav-menu,.nav-actions{display:none}.hamburger{display:flex}}
+
 </style>
 </head>
 <body>
 
 <nav>
   <a href="../index.html" class="logo">⚡ Flash<span>Pay</span></a>
-  <a href="../index.html#download" class="btn-gold">Get Started</a>
+  <div class="nav-menu">
+    <div class="nav-item">
+      <a href="personal.html" class="nav-link has-dropdown">Personal</a>
+      <div class="dropdown">
+        <a href="personal.html" class="dropdown-item"><span class="dropdown-icon">💸</span><span><span class="dropdown-text-title">Send & Receive Money</span><span class="dropdown-text-desc">Instant transfers to anyone</span></span></a>
+        <a href="personal.html#savings" class="dropdown-item"><span class="dropdown-icon">💰</span><span><span class="dropdown-text-title">FlashSave</span><span class="dropdown-text-desc">Smart savings with rewards</span></span></a>
+        <a href="personal.html#rewards" class="dropdown-item"><span class="dropdown-icon">🏆</span><span><span class="dropdown-text-title">FlashPoints</span><span class="dropdown-text-desc">Earn on every transaction</span></span></a>
+      </div>
+    </div>
+    <div class="nav-item">
+      <a href="business.html" class="nav-link has-dropdown">Business</a>
+      <div class="dropdown">
+        <a href="business.html" class="dropdown-item"><span class="dropdown-icon">🏪</span><span><span class="dropdown-text-title">Business Account</span><span class="dropdown-text-desc">Banking for your business</span></span></a>
+        <a href="business.html#payments" class="dropdown-item"><span class="dropdown-icon">💳</span><span><span class="dropdown-text-title">Merchant Payments</span><span class="dropdown-text-desc">Accept payments anywhere</span></span></a>
+        <a href="developers.html" class="dropdown-item"><span class="dropdown-icon">🔗</span><span><span class="dropdown-text-title">API Platform</span><span class="dropdown-text-desc">Integrate FlashPay into your app</span></span></a>
+      </div>
+    </div>
+    <div class="nav-item">
+      <a href="about.html" class="nav-link has-dropdown">Company</a>
+      <div class="dropdown">
+        <a href="about.html" class="dropdown-item"><span class="dropdown-icon">⚡</span><span><span class="dropdown-text-title">About Us</span><span class="dropdown-text-desc">Our story and mission</span></span></a>
+        <a href="security.html" class="dropdown-item"><span class="dropdown-icon">🔐</span><span><span class="dropdown-text-title">Security</span><span class="dropdown-text-desc">How we protect your money</span></span></a>
+        <a href="blog.html" class="dropdown-item"><span class="dropdown-icon">📝</span><span><span class="dropdown-text-title">Blog</span><span class="dropdown-text-desc">News and insights</span></span></a>
+        <a href="../careers.html" class="dropdown-item"><span class="dropdown-icon">💼</span><span><span class="dropdown-text-title">Careers</span><span class="dropdown-text-desc">Join our team</span></span></a>
+      </div>
+    </div>
+    <a href="developers.html" class="nav-link">Developers</a>
+    <a href="support.html" class="nav-link">Support</a>
+  </div>
+  <div class="nav-actions">
+    <a href="../index.html#download" class="btn-gold">Get Started</a>
+  </div>
+  <div class="hamburger" onclick="toggleMobileNav()"><span></span><span></span><span></span></div>
 </nav>
+
+<div class="mobile-nav" id="mobileNav">
+  <a href="personal.html" class="mobile-nav-link">Personal</a>
+  <a href="business.html" class="mobile-nav-link">Business</a>
+  <a href="about.html" class="mobile-nav-link">About Us</a>
+  <a href="security.html" class="mobile-nav-link">Security</a>
+  <a href="developers.html" class="mobile-nav-link">Developers</a>
+  <a href="support.html" class="mobile-nav-link">Support</a>
+  <a href="blog.html" class="mobile-nav-link">Blog</a>
+  <a href="../careers.html" class="mobile-nav-link">Careers</a>
+  <a href="../index.html#download" class="mobile-nav-btn">⚡ Get Started</a>
+</div>
 
 <div class="page-hero">
   <div class="page-hero-bg"></div>
