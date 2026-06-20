@@ -11,11 +11,11 @@
 *{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}
 body{font-family:'DM Sans',sans-serif;background:var(--dark);color:var(--text);overflow-x:hidden}
 h1,h2,h3,h4{font-family:'Syne',sans-serif}
-nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:0 40px;height:72px;display:flex;align-items:center;justify-content:space-between;background:rgba(13,31,24,0.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+nav{position:fixed;top:32px;left:0;right:0;z-index:1000;padding:0 40px;height:72px;display:flex;align-items:center;justify-content:space-between;background:rgba(13,31,24,0.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
 .logo{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:var(--gold);text-decoration:none}
 .logo span{color:var(--text)}
 .btn-gold{background:var(--gold);color:var(--dark);padding:10px 20px;border-radius:100px;font-size:14px;font-weight:700;text-decoration:none;font-family:'Syne',sans-serif}
-.page-hero{padding:140px 40px 60px;position:relative;overflow:hidden;text-align:center}
+.page-hero{padding:172px 40px 60px;position:relative;overflow:hidden;text-align:center}
 .page-hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 60% 60% at 50% 0%,rgba(26,60,46,0.6) 0%,transparent 70%)}
 .page-hero-inner{max-width:700px;margin:0 auto;position:relative;z-index:2}
 .badge{display:inline-flex;align-items:center;gap:8px;background:rgba(200,151,42,0.12);border:1px solid rgba(200,151,42,0.3);border-radius:100px;padding:8px 16px;font-size:13px;font-weight:500;color:var(--gold);margin-bottom:24px}
@@ -52,7 +52,7 @@ footer p{font-size:13px;color:var(--dim)}
 footer a{color:var(--gold);text-decoration:none}
 @media(max-width:768px){
 nav{padding:0 20px}
-.page-hero{padding:100px 20px 40px}
+.page-hero{padding:132px 20px 40px}
 .content-wrap{padding:40px 20px}
 }
 
@@ -71,16 +71,33 @@ nav{padding:0 20px}
 .nav-actions{display:flex;align-items:center;gap:12px}
 .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:8px}
 .hamburger span{width:22px;height:2px;background:var(--text);border-radius:2px}
-.mobile-nav{display:none;position:fixed;top:72px;left:0;right:0;background:rgba(13,31,24,0.98);border-bottom:1px solid var(--border);padding:20px;backdrop-filter:blur(20px);z-index:999;flex-direction:column;gap:8px}
+.mobile-nav{display:none;position:fixed;top:104px;left:0;right:0;background:rgba(13,31,24,0.98);border-bottom:1px solid var(--border);padding:20px;backdrop-filter:blur(20px);z-index:999;flex-direction:column;gap:8px}
 .mobile-nav.open{display:flex}
 .mobile-nav-link{color:var(--dim);text-decoration:none;font-size:15px;font-weight:500;padding:12px 16px;border-radius:10px;transition:all 0.2s;display:block}
 .mobile-nav-link:hover{background:var(--glass);color:var(--text)}
 .mobile-nav-btn{background:var(--gold);color:var(--dark);padding:14px 20px;border-radius:100px;font-weight:700;text-decoration:none;text-align:center;font-family:'Syne',sans-serif;margin-top:8px;display:block}
 @media(max-width:768px){.nav-menu,.nav-actions{display:none}.hamburger{display:flex}}
 
+
+.rate-ticker{position:fixed;top:0;left:0;right:0;z-index:1001;height:32px;background:#0a1612;border-bottom:1px solid var(--border);display:flex;align-items:center;overflow:hidden}
+.rate-ticker-inner{max-width:1200px;margin:0 auto;width:100%;padding:0 40px;display:flex;align-items:center;gap:24px;font-size:11px;color:var(--dim)}
+.rate-item{display:flex;align-items:center;gap:5px;white-space:nowrap}
+.rate-item strong{color:var(--gold);font-weight:700}
+.rate-updated{margin-left:auto;font-size:10px;color:var(--faint);white-space:nowrap}
+@media(max-width:768px){.rate-ticker-inner{padding:0 16px;gap:14px}.rate-updated{display:none}}
+
 </style>
 </head>
 <body>
+<div class="rate-ticker" id="rateTicker">
+  <div class="rate-ticker-inner">
+    <span class="rate-item">💵 USD <strong id="rateUSD">...</strong></span>
+    <span class="rate-item">💷 GBP <strong id="rateGBP">...</strong></span>
+    <span class="rate-item">💶 EUR <strong id="rateEUR">...</strong></span>
+    <span class="rate-updated" id="rateUpdated"></span>
+  </div>
+</div>
+
 
 <nav>
   <a href="../index.html" class="logo">⚡ Flash<span>Pay</span></a>
