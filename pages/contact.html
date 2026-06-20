@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Contact FlashPay — Get in touch with our team for support, partnerships or general inquiries.">
+<title>Contact Us — FlashPay</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--green:#1A3C2E;--gold:#C8972A;--dark:#0d1f18;--text:#e8f0eb;--dim:rgba(232,240,235,0.6);--faint:rgba(232,240,235,0.3);--glass:rgba(255,255,255,0.04);--border:rgba(255,255,255,0.08)}
+*{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--dark);color:var(--text);overflow-x:hidden}
+h1,h2,h3,h4{font-family:'Syne',sans-serif}
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:0 40px;height:72px;display:flex;align-items:center;justify-content:space-between;background:rgba(13,31,24,0.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+.logo{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:var(--gold);text-decoration:none}
+.logo span{color:var(--text)}
+.nav-links{display:flex;gap:8px;list-style:none}
+.nav-links a{color:var(--dim);text-decoration:none;font-size:14px;font-weight:500;padding:8px 14px;border-radius:8px;transition:all 0.2s}
+.nav-links a:hover,.nav-links a.active{color:var(--text);background:var(--glass)}
+.btn-gold{background:var(--gold);color:var(--dark);padding:10px 20px;border-radius:100px;font-size:14px;font-weight:700;text-decoration:none;font-family:'Syne',sans-serif}
+.page-hero{padding:140px 40px 60px;position:relative;overflow:hidden;text-align:center}
+.page-hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 60% 60% at 50% 0%,rgba(26,60,46,0.6) 0%,transparent 70%)}
+.page-hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(200,151,42,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(200,151,42,0.03) 1px,transparent 1px);background-size:60px 60px}
+.page-hero-inner{max-width:700px;margin:0 auto;position:relative;z-index:2}
+.badge{display:inline-flex;align-items:center;gap:8px;background:rgba(200,151,42,0.12);border:1px solid rgba(200,151,42,0.3);border-radius:100px;padding:8px 16px;font-size:13px;font-weight:500;color:var(--gold);margin-bottom:24px}
+.gold{color:var(--gold)}
+.page-hero h1{font-size:clamp(36px,5vw,64px);font-weight:800;line-height:1.05;margin-bottom:20px}
+.page-hero p{font-size:18px;color:var(--dim);line-height:1.7;max-width:560px;margin:0 auto}
+section{padding:60px 40px}
+.inner{max-width:1200px;margin:0 auto}
+.contact-layout{display:grid;grid-template-columns:1fr 1.3fr;gap:48px}
+.info-card{background:rgba(26,60,46,0.3);border:1px solid var(--border);border-radius:24px;padding:32px;margin-bottom:20px;transition:all 0.3s}
+.info-card:hover{border-color:rgba(200,151,42,0.3)}
+.info-icon{font-size:32px;margin-bottom:14px;display:block}
+.info-card h3{font-size:17px;font-weight:700;margin-bottom:8px}
+.info-card p{font-size:14px;color:var(--dim);line-height:1.6;margin-bottom:8px}
+.info-card a{color:var(--gold);text-decoration:none;font-size:14px;font-weight:600}
+.social-row{display:flex;gap:10px;margin-top:16px}
+.social-btn{width:40px;height:40px;border-radius:12px;background:var(--glass);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:16px;text-decoration:none;transition:all 0.2s}
+.social-btn:hover{border-color:var(--gold);background:rgba(200,151,42,0.1)}
+.form-box{background:rgba(26,60,46,0.3);border:1px solid var(--border);border-radius:24px;padding:40px}
+.form-box h2{font-size:26px;font-weight:800;margin-bottom:8px}
+.form-box>p{font-size:14px;color:var(--dim);margin-bottom:32px}
+.reason-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:24px}
+.reason-btn{background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:12px;padding:14px;text-align:center;cursor:pointer;font-size:13px;font-weight:600;color:var(--dim);transition:all 0.2s}
+.reason-btn.active,.reason-btn:hover{border-color:var(--gold);color:var(--gold);background:rgba(200,151,42,0.08)}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.form-group{display:flex;flex-direction:column;gap:8px}
+.form-group.full{grid-column:1/-1}
+.form-group label{font-size:13px;font-weight:600;color:var(--dim)}
+.form-group input,.form-group textarea{background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:12px;padding:14px 16px;color:var(--text);font-size:14px;font-family:'DM Sans',sans-serif;outline:none;transition:all 0.2s;width:100%}
+.form-group input:focus,.form-group textarea:focus{border-color:var(--gold);background:rgba(200,151,42,0.05)}
+.form-group input::placeholder,.form-group textarea::placeholder{color:var(--faint)}
+.form-group textarea{resize:vertical;min-height:120px}
+.submit-btn{width:100%;padding:16px;background:var(--gold);color:var(--dark);border:none;border-radius:12px;font-size:15px;font-weight:700;font-family:'Syne',sans-serif;cursor:pointer;transition:all 0.2s;margin-top:8px}
+.submit-btn:hover{filter:brightness(1.1);transform:translateY(-1px)}
+.map-section{margin-top:60px;background:rgba(26,60,46,0.3);border:1px solid var(--border);border-radius:24px;padding:48px;text-align:center}
+.map-icon{font-size:48px;margin-bottom:16px}
+.map-section h3{font-size:22px;font-weight:800;margin-bottom:8px}
+.map-section p{font-size:14px;color:var(--dim)}
+footer{background:rgba(13,31,24,0.8);border-top:1px solid var(--border);padding:40px;text-align:center}
+footer p{font-size:13px;color:var(--dim)}
+footer a{color:var(--gold);text-decoration:none}
+.reveal{opacity:0;transform:translateY(32px);transition:opacity 0.7s ease,transform 0.7s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+@media(max-width:768px){
+nav{padding:0 20px}.nav-links{display:none}
+.page-hero{padding:100px 20px 40px}
+section{padding:40px 20px}
+.contact-layout{grid-template-columns:1fr}
+.form-grid{grid-template-columns:1fr}
+.form-group.full{grid-column:1}
+.reason-grid{grid-template-columns:1fr 1fr}
+.form-box{padding:24px}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="../index.html" class="logo">⚡ Flash<span>Pay</span></a>
+  <ul class="nav-links">
+    <li><a href="personal.html">Personal</a></li>
+    <li><a href="business.html">Business</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="support.html">Support</a></li>
+    <li><a href="contact.html" class="active">Contact</a></li>
+    <li><a href="../careers.html">Careers</a></li>
+  </ul>
+  <a href="../index.html#download" class="btn-gold">Get Started</a>
+</nav>
+
+<div class="page-hero">
+  <div class="page-hero-bg"></div>
+  <div class="page-hero-grid"></div>
+  <div class="page-hero-inner">
+    <div class="badge">📬 Get In Touch</div>
+    <h1>Let's <span class="gold">talk</span></h1>
+    <p>Whether you have a question, feedback, partnership idea or just want to say hello, our team is here for you.</p>
+  </div>
+</div>
+
+<section>
+  <div class="inner">
+    <div class="contact-layout reveal">
+
+      <div>
+        <div class="info-card">
+          <span class="info-icon">📧</span>
+          <h3>Email Us</h3>
+          <p>For general inquiries</p>
+          <a href="mailto:hello@flashpay.ng">hello@flashpay.ng</a>
+        </div>
+        <div class="info-card">
+          <span class="info-icon">💬</span>
+          <h3>Support</h3>
+          <p>For account and transaction help</p>
+          <a href="mailto:support@flashpay.ng">support@flashpay.ng</a>
+        </div>
+        <div class="info-card">
+          <span class="info-icon">🤝</span>
+          <h3>Partnerships</h3>
+          <p>For business and partnership inquiries</p>
+          <a href="mailto:partnerships@flashpay.ng">partnerships@flashpay.ng</a>
+        </div>
+        <div class="info-card">
+          <span class="info-icon">📍</span>
+          <h3>Our Office</h3>
+          <p>ESSENCE BUSINESS PLATFORM LIMITED<br>Ibafo, Ogun State, Nigeria 🇳🇬</p>
+          <div class="social-row">
+            <a href="#" class="social-btn">𝕏</a>
+            <a href="#" class="social-btn">in</a>
+            <a href="#" class="social-btn">f</a>
+            <a href="#" class="social-btn">📸</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-box">
+        <h2>Send us a message</h2>
+        <p>Fill in the form below and we will get back to you as soon as possible.</p>
+
+        <div class="reason-grid">
+          <div class="reason-btn active" onclick="selectReason(this)">💬 General</div>
+          <div class="reason-btn" onclick="selectReason(this)">🛠️ Support</div>
+          <div class="reason-btn" onclick="selectReason(this)">🤝 Partnership</div>
+          <div class="reason-btn" onclick="selectReason(this)">📰 Press</div>
+        </div>
+
+        <form onsubmit="submitContact(event)">
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Full Name</label>
+              <input type="text" placeholder="Your full name" required id="contactName">
+            </div>
+            <div class="form-group">
+              <label>Email Address</label>
+              <input type="email" placeholder="your@email.com" required id="contactEmail">
+            </div>
+            <div class="form-group full">
+              <label>Phone Number</label>
+              <input type="tel" placeholder="08012345678" id="contactPhone">
+            </div>
+            <div class="form-group full">
+              <label>Subject</label>
+              <input type="text" placeholder="What is this about?" required id="contactSubject">
+            </div>
+            <div class="form-group full">
+              <label>Message</label>
+              <textarea placeholder="Tell us more..." required id="contactMessage"></textarea>
+            </div>
+          </div>
+          <button type="submit" class="submit-btn">📨 Send Message</button>
+        </form>
+      </div>
+
+    </div>
+
+    <div class="map-section reveal">
+      <span class="map-icon">🗺️</span>
+      <h3>Built in Ibafo, Ogun State</h3>
+      <p>Proudly Nigerian. Proudly building the future of finance for Africa.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>© 2026 <a href="../index.html">FlashPay</a> — ESSENCE BUSINESS PLATFORM LIMITED. Built with ❤️ in Nigeria 🇳🇬</p>
+</footer>
+
+<script>
+const reveals = document.querySelectorAll('.reveal');
+const obs = new IntersectionObserver(function(entries) {
+  entries.forEach(function(e, i) {
+    if (e.isIntersecting) setTimeout(function() { e.target.classList.add('visible'); }, i * 100);
+  });
+}, { threshold: 0.1 });
+reveals.forEach(function(el) { obs.observe(el); });
+
+function selectReason(el) {
+  document.querySelectorAll('.reason-btn').forEach(function(b) { b.classList.remove('active'); });
+  el.classList.add('active');
+}
+
+function submitContact(e) {
+  e.preventDefault();
+  const name = document.getElementById('contactName').value;
+  alert('Thank you ' + name + '! Your message has been sent. We will get back to you within 24 hours.');
+  e.target.reset();
+}
+</script>
+</body>
+</html>
