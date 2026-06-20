@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="FlashPay Blog Article">
+<title id="pageTitle">Article — FlashPay Blog</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--green:#1A3C2E;--gold:#C8972A;--dark:#0d1f18;--text:#e8f0eb;--dim:rgba(232,240,235,0.6);--faint:rgba(232,240,235,0.3);--glass:rgba(255,255,255,0.04);--border:rgba(255,255,255,0.08)}
+*{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--dark);color:var(--text);overflow-x:hidden}
+h1,h2,h3,h4{font-family:'Syne',sans-serif}
+.rate-ticker{position:fixed;top:0;left:0;right:0;z-index:1001;height:32px;background:#0a1612;border-bottom:1px solid var(--border);display:flex;align-items:center;overflow:hidden}
+.rate-ticker-inner{max-width:1200px;margin:0 auto;width:100%;padding:0 40px;display:flex;align-items:center;gap:24px;font-size:11px;color:var(--dim)}
+.rate-item{display:flex;align-items:center;gap:5px;white-space:nowrap}
+.rate-item strong{color:var(--gold);font-weight:700}
+.rate-updated{margin-left:auto;font-size:10px;color:var(--faint);white-space:nowrap}
+nav{position:fixed;top:32px;left:0;right:0;z-index:1000;padding:0 40px;height:72px;display:flex;align-items:center;justify-content:space-between;background:rgba(13,31,24,0.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+.logo{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:var(--gold);text-decoration:none}
+.logo span{color:var(--text)}
+.nav-menu{display:flex;align-items:center;gap:4px}
+.nav-item{position:relative}
+.nav-link{color:var(--dim);text-decoration:none;font-size:14px;font-weight:500;padding:8px 14px;border-radius:8px;transition:all 0.2s;display:block;white-space:nowrap}
+.nav-link:hover{color:var(--text);background:var(--glass)}
+.nav-link.has-dropdown::after{content:' ▾';font-size:10px}
+.dropdown{position:absolute;top:100%;left:0;min-width:220px;background:rgba(13,31,24,0.98);border:1px solid var(--border);border-radius:16px;padding:8px;opacity:0;visibility:hidden;transform:translateY(8px);transition:all 0.2s;backdrop-filter:blur(20px);box-shadow:0 20px 40px rgba(0,0,0,0.4);z-index:200}
+.nav-item:hover .dropdown{opacity:1;visibility:visible;transform:translateY(4px)}
+.dropdown-item{display:flex;align-items:flex-start;gap:12px;padding:12px;border-radius:10px;text-decoration:none;transition:all 0.2s}
+.dropdown-item:hover{background:var(--glass)}
+.dropdown-icon{font-size:20px;flex-shrink:0;margin-top:2px}
+.dropdown-text-title{font-size:13px;font-weight:600;color:var(--text);display:block}
+.dropdown-text-desc{font-size:11px;color:var(--dim);display:block;margin-top:2px}
+.nav-actions{display:flex;align-items:center;gap:12px}
+.btn-gold{background:var(--gold);color:var(--dark);padding:10px 20px;border-radius:100px;font-size:14px;font-weight:700;text-decoration:none;font-family:'Syne',sans-serif}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:8px}
+.hamburger span{width:22px;height:2px;background:var(--text);border-radius:2px}
+.mobile-nav{display:none;position:fixed;top:104px;left:0;right:0;background:rgba(13,31,24,0.98);border-bottom:1px solid var(--border);padding:20px;backdrop-filter:blur(20px);z-index:999;flex-direction:column;gap:8px}
+.mobile-nav.open{display:flex}
+.mobile-nav-link{color:var(--dim);text-decoration:none;font-size:15px;font-weight:500;padding:12px 16px;border-radius:10px;transition:all 0.2s;display:block}
+.mobile-nav-link:hover{background:var(--glass);color:var(--text)}
+.mobile-nav-btn{background:var(--gold);color:var(--dark);padding:14px 20px;border-radius:100px;font-weight:700;text-decoration:none;text-align:center;font-family:'Syne',sans-serif;margin-top:8px;display:block}
+.article-wrap{max-width:760px;margin:0 auto;padding:172px 40px 100px}
+.back-link{display:inline-flex;align-items:center;gap:8px;color:var(--gold);text-decoration:none;font-size:14px;font-weight:600;margin-bottom:32px}
+.back-link:hover{opacity:0.8}
+.article-category{display:inline-block;font-size:11px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:1px;margin-bottom:16px}
+.article-title{font-size:clamp(28px,5vw,44px);font-weight:800;line-height:1.15;margin-bottom:24px}
+.article-meta{display:flex;align-items:center;gap:12px;font-size:13px;color:var(--dim);margin-bottom:40px;padding-bottom:32px;border-bottom:1px solid var(--border)}
+.article-avatar{width:36px;height:36px;border-radius:50%;background:var(--green);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:var(--gold);font-family:'Syne',sans-serif}
+.article-image{height:260px;border-radius:24px;background:linear-gradient(135deg,var(--green),rgba(26,60,46,0.4));display:flex;align-items:center;justify-content:center;font-size:80px;margin-bottom:40px}
+.article-body p{font-size:16px;color:var(--dim);line-height:1.9;margin-bottom:22px}
+.article-body h3{font-size:22px;font-weight:700;color:var(--text);margin:36px 0 16px}
+.share-box{display:flex;align-items:center;gap:12px;margin-top:48px;padding-top:32px;border-top:1px solid var(--border)}
+.share-label{font-size:13px;color:var(--dim);font-weight:600}
+.share-btn{width:38px;height:38px;border-radius:10px;background:var(--glass);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:15px;text-decoration:none;cursor:pointer;transition:all 0.2s}
+.share-btn:hover{border-color:var(--gold);background:rgba(200,151,42,0.1)}
+.related-box{background:rgba(200,151,42,0.06);border:1px solid rgba(200,151,42,0.2);border-radius:20px;padding:32px;margin-top:48px;text-align:center}
+.related-box h4{font-size:18px;font-weight:700;margin-bottom:8px}
+.related-box p{font-size:14px;color:var(--dim);margin-bottom:20px}
+footer{background:rgba(13,31,24,0.8);border-top:1px solid var(--border);padding:40px;text-align:center}
+footer p{font-size:13px;color:var(--dim)}
+footer a{color:var(--gold);text-decoration:none}
+@media(max-width:768px){
+nav{padding:0 20px}.nav-menu,.nav-actions{display:none}.hamburger{display:flex}
+.article-wrap{padding:132px 20px 60px}
+.article-image{height:180px;font-size:56px}
+}
+</style>
+</head>
+<body>
+
+<div class="rate-ticker" id="rateTicker">
+  <div class="rate-ticker-inner">
+    <span class="rate-item">💵 USD <strong id="rateUSD">...</strong></span>
+    <span class="rate-item">💷 GBP <strong id="rateGBP">...</strong></span>
+    <span class="rate-item">💶 EUR <strong id="rateEUR">...</strong></span>
+    <span class="rate-updated" id="rateUpdated"></span>
+  </div>
+</div>
+
+<nav>
+  <a href="../index.html" class="logo">⚡ Flash<span>Pay</span></a>
+  <div class="nav-menu">
+    <div class="nav-item">
+      <a href="personal.html" class="nav-link has-dropdown">Personal</a>
+      <div class="dropdown">
+        <a href="personal.html" class="dropdown-item"><span class="dropdown-icon">💸</span><span><span class="dropdown-text-title">Send & Receive Money</span><span class="dropdown-text-desc">Instant transfers to anyone</span></span></a>
+        <a href="personal.html#savings" class="dropdown-item"><span class="dropdown-icon">💰</span><span><span class="dropdown-text-title">FlashSave</span><span class="dropdown-text-desc">Smart savings with rewards</span></span></a>
+        <a href="personal.html#rewards" class="dropdown-item"><span class="dropdown-icon">🏆</span><span><span class="dropdown-text-title">FlashPoints</span><span class="dropdown-text-desc">Earn on every transaction</span></span></a>
+      </div>
+    </div>
+    <div class="nav-item">
+      <a href="business.html" class="nav-link has-dropdown">Business</a>
+      <div class="dropdown">
+        <a href="business.html" class="dropdown-item"><span class="dropdown-icon">🏪</span><span><span class="dropdown-text-title">Business Account</span><span class="dropdown-text-desc">Banking for your business</span></span></a>
+        <a href="business.html#payments" class="dropdown-item"><span class="dropdown-icon">💳</span><span><span class="dropdown-text-title">Merchant Payments</span><span class="dropdown-text-desc">Accept payments anywhere</span></span></a>
+        <a href="developers.html" class="dropdown-item"><span class="dropdown-icon">🔗</span><span><span class="dropdown-text-title">API Platform</span><span class="dropdown-text-desc">Integrate FlashPay into your app</span></span></a>
+      </div>
+    </div>
+    <div class="nav-item">
+      <a href="about.html" class="nav-link has-dropdown">Company</a>
+      <div class="dropdown">
+        <a href="about.html" class="dropdown-item"><span class="dropdown-icon">⚡</span><span><span class="dropdown-text-title">About Us</span><span class="dropdown-text-desc">Our story and mission</span></span></a>
+        <a href="security.html" class="dropdown-item"><span class="dropdown-icon">🔐</span><span><span class="dropdown-text-title">Security</span><span class="dropdown-text-desc">How we protect your money</span></span></a>
+        <a href="blog.html" class="dropdown-item"><span class="dropdown-icon">📝</span><span><span class="dropdown-text-title">Blog</span><span class="dropdown-text-desc">News and insights</span></span></a>
+        <a href="../careers.html" class="dropdown-item"><span class="dropdown-icon">💼</span><span><span class="dropdown-text-title">Careers</span><span class="dropdown-text-desc">Join our team</span></span></a>
+      </div>
+    </div>
+    <a href="developers.html" class="nav-link">Developers</a>
+    <a href="support.html" class="nav-link">Support</a>
+  </div>
+  <div class="nav-actions">
+    <a href="../index.html#download" class="btn-gold">Get Started</a>
+  </div>
+  <div class="hamburger" onclick="toggleMobileNav()"><span></span><span></span><span></span></div>
+</nav>
+
+<div class="mobile-nav" id="mobileNav">
+  <a href="personal.html" class="mobile-nav-link">Personal</a>
+  <a href="business.html" class="mobile-nav-link">Business</a>
+  <a href="about.html" class="mobile-nav-link">About Us</a>
+  <a href="security.html" class="mobile-nav-link">Security</a>
+  <a href="developers.html" class="mobile-nav-link">Developers</a>
+  <a href="support.html" class="mobile-nav-link">Support</a>
+  <a href="blog.html" class="mobile-nav-link">Blog</a>
+  <a href="../careers.html" class="mobile-nav-link">Careers</a>
+  <a href="../index.html#download" class="mobile-nav-btn">⚡ Get Started</a>
+</div>
+
+<div class="article-wrap">
+  <a href="blog.html" class="back-link">← Back to Blog</a>
+
+  <div id="articleContent">
+    <p style="color:var(--dim)">Loading article...</p>
+  </div>
+
+  <div class="share-box">
+    <span class="share-label">Share this article:</span>
+    <a href="#" class="share-btn" onclick="shareArticle('whatsapp');return false;">💬</a>
+    <a href="#" class="share-btn" onclick="shareArticle('twitter');return false;">𝕏</a>
+    <a href="#" class="share-btn" onclick="shareArticle('copy');return false;">🔗</a>
+  </div>
+
+  <div class="related-box">
+    <h4>Want more FlashPay stories?</h4>
+    <p>Read more articles about fintech, security and building in Nigeria.</p>
+    <a href="blog.html" class="btn-gold">📰 Browse All Articles</a>
+  </div>
+</div>
+
+<footer>
+  <p>© 2026 <a href="../index.html">FlashPay</a>, ESSENCE BUSINESS PLATFORM LIMITED. Built with ❤️ in Nigeria 🇳🇬</p>
+</footer>
+
+<script>
+  function toggleMobileNav() {
+    document.getElementById('mobileNav').classList.toggle('open');
+  }
+  document.querySelectorAll('.mobile-nav-link, .mobile-nav-btn').forEach(function(link) {
+    link.addEventListener('click', function() {
+      document.getElementById('mobileNav').classList.remove('open');
+    });
+  });
+
+  fetch('https://open.er-api.com/v6/latest/USD')
+    .then(function(r){ return r.json(); })
+    .then(function(data){
+      var ngn = data.rates.NGN;
+      var gbp = data.rates.GBP;
+      var eur = data.rates.EUR;
+      document.getElementById('rateUSD').textContent = '₦' + ngn.toLocaleString('en-NG',{maximumFractionDigits:2});
+      document.getElementById('rateGBP').textContent = '₦' + (ngn/gbp).toLocaleString('en-NG',{maximumFractionDigits:2});
+      document.getElementById('rateEUR').textContent = '₦' + (ngn/eur).toLocaleString('en-NG',{maximumFractionDigits:2});
+      document.getElementById('rateUpdated').textContent = 'Updated ' + new Date().toLocaleTimeString('en-NG',{hour:'2-digit',minute:'2-digit'});
+    })
+    .catch(function(){
+      document.getElementById('rateUSD').textContent = 'N/A';
+      document.getElementById('rateGBP').textContent = 'N/A';
+      document.getElementById('rateEUR').textContent = 'N/A';
+    });
+
+  var articles = {
+    'building-from-a-phone': {
+      category: 'Founder Story',
+      emoji: '⚡',
+      title: 'Building a Fintech App From a Phone: The FlashPay Story',
+      date: 'June 2026',
+      readTime: '6 min read',
+      body: [
+        'Every great company starts with a constraint that forces creative thinking. For FlashPay, that constraint was simple: no laptop, no office, no funding. Just an Android phone in Ibafo, Ogun State, and a determination to build something that mattered.',
+        'Using Termux, a terminal emulator for Android, the entire FlashPay app was built from scratch. Every screen, every API endpoint, every security feature was typed out on a phone keyboard, one line of code at a time.',
+        'The idea came from a simple observation. Millions of Nigerians struggle to access basic financial services. Bank branches are far away, paperwork is intimidating, and traditional banking often feels like it was not built with everyday Nigerians in mind.',
+        'So the question became: what if you could build a complete fintech super app that handles transfers, bill payments, savings and rewards, all from the most accessible device in Nigeria, the mobile phone?',
+        'Month after month, screen by screen, FlashPay came together. A React Native frontend connected to a Node.js backend, both built using nothing more than a phone and persistence. Security was treated as non negotiable from day one, with JWT authentication, bcrypt encryption and biometric verification built in from the start.',
+        'This story matters beyond FlashPay itself. It proves that meaningful technology does not require expensive equipment or a fancy office. It requires a clear problem worth solving and the discipline to keep building, one commit at a time.',
+        'Today, FlashPay stands as proof that Nigerian ingenuity can compete with any fintech product in the world, built from anywhere, by anyone willing to put in the work.'
+      ]
+    },
+    'unbanked-nigeria': {
+      category: 'Fintech in Nigeria',
+      emoji: '🇳🇬',
+      title: 'Why 70 Million Nigerians Are Still Unbanked',
+      date: 'June 2026',
+      readTime: '5 min read',
+      body: [
+        'Despite Nigeria being home to some of Africa\\'s most innovative fintech companies, a significant portion of the population still lacks access to basic financial services. Estimates suggest that tens of millions of Nigerian adults remain unbanked or underbanked.',
+        'The reasons are varied. Many rural communities simply do not have a bank branch nearby, making physical banking inconvenient or impossible. For those in informal employment, the paperwork required to open a traditional bank account can feel like an insurmountable barrier.',
+        'There is also a trust gap. Years of inconsistent banking experiences have left many Nigerians skeptical of formal financial institutions, preferring to keep cash at home or rely on informal savings groups instead.',
+        'This is where mobile fintech changes the equation entirely. With just a smartphone and an internet connection, anyone can open a digital wallet in minutes, without queues, without intimidating paperwork, and without needing to travel to a physical branch.',
+        'Apps like FlashPay are designed specifically with this gap in mind. By focusing on simplicity, speed and trust, mobile fintech platforms are quietly becoming the financial gateway for millions of Nigerians who were previously locked out of the formal economy.',
+        'The path to full financial inclusion in Nigeria will not happen overnight, but every new fintech user represents real progress toward a more inclusive financial future for the country.'
+      ]
+    },
+    'how-flashpay-protects-your-money': {
+      category: 'Security',
+      emoji: '🔐',
+      title: 'How FlashPay Protects Your Money',
+      date: 'June 2026',
+      readTime: '4 min read',
+      body: [
+        'When you trust an app with your money, security cannot be an afterthought. At FlashPay, every feature is built with protection in mind from the very first line of code.',
+        'Your PIN is never stored as readable text. Instead, it passes through bcrypt encryption, a one way hashing process that makes it mathematically impractical for anyone, including our own team, to reverse engineer your original PIN.',
+        'Every session on FlashPay is secured using JSON Web Tokens, commonly known as JWT. These tokens expire automatically after a set period, meaning that even if a token were somehow exposed, it would become useless after expiry.',
+        'For an extra layer of convenience and security, FlashPay supports biometric login and transaction confirmation. Your fingerprint or Face ID data never leaves your device, it simply unlocks a secure key stored locally.',
+        'Behind the scenes, FlashPay also monitors transactions for unusual patterns. If something looks out of place, such as an unusually large transfer, the system flags it and notifies you immediately.',
+        'Security is never finished. It is a continuous process of testing, monitoring and improving. That commitment is what allows FlashPay users to send money with confidence, every single time.'
+      ]
+    },
+    'smart-ways-to-save-2026': {
+      category: 'Savings Tips',
+      emoji: '💰',
+      title: '5 Smart Ways to Save Money in 2026',
+      date: 'June 2026',
+      readTime: '3 min read',
+      body: [
+        'Saving money consistently is one of the hardest financial habits to build, especially with rising costs of living. Here are five practical strategies that actually work for everyday Nigerians.',
+        'First, automate your savings. Set up a recurring deduction, even if it is a small amount, so that saving happens automatically rather than relying on willpower alone.',
+        'Second, set a specific goal. Saving toward something concrete, like a new phone or a small business investment, makes the process feel meaningful rather than abstract.',
+        'Third, track where your money actually goes. Many people are surprised to discover how much they spend on small, frequent purchases once they start paying attention.',
+        'Fourth, consider locking a portion of your savings for a fixed period. Removing the temptation to withdraw makes it far easier to stick to your savings plan and often comes with better interest rates.',
+        'Finally, save together. Group savings, sometimes called Ajo or Esusu, have worked for generations in Nigeria because shared accountability keeps everyone committed.',
+        'None of these strategies require a large income, only consistency. Small, regular steps compound into real financial progress over time.'
+      ]
+    },
+    'introducing-flashpoints': {
+      category: 'Product Update',
+      emoji: '🏆',
+      title: 'Introducing FlashPoints: Earn As You Spend',
+      date: 'June 2026',
+      readTime: '3 min read',
+      body: [
+        'We are excited to introduce FlashPoints, a rewards program designed to give something back every time you use FlashPay.',
+        'Every transaction on the platform, whether it is a transfer, an airtime purchase, a bill payment or a savings deposit, earns you FlashPoints automatically. There is nothing extra to do, points accumulate as you use the app naturally.',
+        'Once you have earned enough points, you can redeem them for real value, including free airtime, data bundles, cashback directly to your wallet, and other exclusive rewards.',
+        'FlashPoints also unlocks savings levels. As your accumulated points grow, you progress from New Saver toward higher tiers, each one unlocking better rewards and benefits.',
+        'The goal behind FlashPoints is simple. Using FlashPay should feel rewarding, not just functional. Every naira you move through the app brings you a little closer to something valuable in return.',
+        'Open your FlashPay app today and check your FlashPoints balance under the Rewards tab to see how much you have already earned.'
+      ]
+    },
+    'tech-stack-powering-flashpay': {
+      category: 'Behind the Scenes',
+      emoji: '📱',
+      title: 'The Tech Stack Powering FlashPay',
+      date: 'June 2026',
+      readTime: '7 min read',
+      body: [
+        'Curious what actually powers FlashPay behind the scenes? Here is a technical look at the architecture that handles thousands of transactions reliably.',
+        'The mobile app is built using React Native with Expo, allowing a single codebase to deliver a smooth native experience. Navigation is handled with React Navigation, and all sensitive data on the device is protected using SecureStore.',
+        'On the backend, FlashPay runs on Node.js with the Express framework, deployed on Vercel for fast, reliable hosting. The API handles everything from authentication to transaction processing through a series of well organized route files.',
+        'For the database, FlashPay uses Supabase, a PostgreSQL based platform that provides both a powerful relational database and built in authentication tools.',
+        'Authentication itself relies on JSON Web Tokens, paired with bcrypt for PIN encryption. Every protected route on the backend verifies a valid token before processing any sensitive request.',
+        'Payment integrations connect to VTPass for airtime, data and bill payments, and to Flutterwave and Monnify for bank transfers and wallet funding, giving FlashPay users access to a complete suite of financial services.',
+        'What makes this stack particularly remarkable is where it was built. Every single piece, from the database schema to the JWT middleware, was written and tested entirely on a mobile phone using Termux, proving that powerful technology does not require expensive equipment.'
+      ]
+    },
+    'expand-west-africa': {
+      category: 'Vision',
+      emoji: '🌍',
+      title: 'Our Plan to Expand Across West Africa',
+      date: 'June 2026',
+      readTime: '5 min read',
+      body: [
+        'FlashPay began with a focus on Nigeria, but the vision has always extended further. West Africa shares many of the same financial inclusion challenges, and we believe the same solutions that work here can work across the region.',
+        'Our roadmap begins with strengthening the core Nigerian product, ensuring rock solid reliability, security and user trust before expanding into new markets.',
+        'From there, the plan is to expand into neighboring countries with similar financial landscapes, starting with Ghana, where mobile money adoption is already strong and the appetite for a unified super app is high.',
+        'Expansion will not mean simply copying the Nigerian product into a new country. Each market has its own regulatory requirements, payment infrastructure and user behavior, and FlashPay intends to adapt thoughtfully rather than rush.',
+        'Long term, the goal is to build the financial operating system for everyday Africans, a single trusted platform for sending money, paying bills, saving and growing wealth, no matter which country you call home.',
+        'This is an ambitious vision, but it starts with the same principle that built FlashPay in the first place: solve real problems for real people, one feature at a time.'
+      ]
+    }
+  };
+
+  function loadArticle() {
+    var params = new URLSearchParams(window.location.search);
+    var slug = params.get('post');
+    var article = articles[slug];
+    var container = document.getElementById('articleContent');
+
+    if (!article) {
+      container.innerHTML = '<p style="color:var(--dim)">Article not found. <a href="blog.html" style="color:var(--gold)">Browse all articles</a></p>';
+      return;
+    }
+
+    document.title = article.title + ' | FlashPay Blog';
+
+    var html = '';
+    html += '<div class="article-category">' + article.category + '</div>';
+    html += '<h1 class="article-title">' + article.title + '</h1>';
+    html += '<div class="article-meta">';
+    html += '<div class="article-avatar">FP</div>';
+    html += '<span>FlashPay Team</span><span>•</span><span>' + article.date + '</span><span>•</span><span>' + article.readTime + '</span>';
+    html += '</div>';
+    html += '<div class="article-image">' + article.emoji + '</div>';
+    html += '<div class="article-body">';
+    article.body.forEach(function(p) {
+      html += '<p>' + p + '</p>';
+    });
+    html += '</div>';
+
+    container.innerHTML = html;
+  }
+
+  function shareArticle(platform) {
+    var url = window.location.href;
+    var title = document.title;
+    if (platform === 'whatsapp') {
+      window.open('https://wa.me/?text=' + encodeURIComponent(title + ' ' + url), '_blank');
+    } else if (platform === 'twitter') {
+      window.open('https://twitter.com/intent/tweet?text=' + encodeURIComponent(title) + '&url=' + encodeURIComponent(url), '_blank');
+    } else if (platform === 'copy') {
+      navigator.clipboard.writeText(url).then(function() {
+        alert('Link copied to clipboard!');
+      });
+    }
+  }
+
+  loadArticle();
+</script>
+</body>
+</html>
