@@ -191,7 +191,7 @@ nav{padding:0 20px}.nav-menu,.nav-actions{display:none}.hamburger{display:flex}
         'Using Termux, a terminal emulator for Android, the entire FlashPay app was built from scratch. Every screen, every API endpoint, every security feature was typed out on a phone keyboard, one line of code at a time.',
         'The idea came from a simple observation. Millions of Nigerians struggle to access basic financial services. Bank branches are far away, paperwork is intimidating, and traditional banking often feels like it was not built with everyday Nigerians in mind.',
         'So the question became: what if you could build a complete fintech super app that handles transfers, bill payments, savings and rewards, all from the most accessible device in Nigeria, the mobile phone?',
-        'Month after month, screen by screen, FlashPay came together. A React Native frontend connected to a Node.js backend, both built using nothing more than a phone and persistence. Security was treated as non negotiable from day one, with JWT authentication, bcrypt encryption and biometric verification built in from the start.',
+        'Month after month, screen by screen, FlashPay came together, one feature, one fix, one screen at a time, using nothing more than a phone and persistence. Security was treated as non negotiable from day one, a principle that has remained central to FlashPay ever since.',
         'This story matters beyond FlashPay itself. It proves that meaningful technology does not require expensive equipment or a fancy office. It requires a clear problem worth solving and the discipline to keep building, one commit at a time.',
         'Today, FlashPay stands as proof that Nigerian ingenuity can compete with any fintech product in the world, built from anywhere, by anyone willing to put in the work.'
       ]
@@ -218,12 +218,12 @@ nav{padding:0 20px}.nav-menu,.nav-actions{display:none}.hamburger{display:flex}
       date: 'June 2026',
       readTime: '4 min read',
       body: [
-        'When you trust an app with your money, security cannot be an afterthought. At FlashPay, every feature is built with protection in mind from the very first line of code.',
-        'Your PIN is never stored as readable text. Instead, it passes through bcrypt encryption, a one way hashing process that makes it mathematically impractical for anyone, including our own team, to reverse engineer your original PIN.',
-        'Every session on FlashPay is secured using JSON Web Tokens, commonly known as JWT. These tokens expire automatically after a set period, meaning that even if a token were somehow exposed, it would become useless after expiry.',
-        'For an extra layer of convenience and security, FlashPay supports biometric login and transaction confirmation. Your fingerprint or Face ID data never leaves your device, it simply unlocks a secure key stored locally.',
-        'Behind the scenes, FlashPay also monitors transactions for unusual patterns. If something looks out of place, such as an unusually large transfer, the system flags it and notifies you immediately.',
-        'Security is never finished. It is a continuous process of testing, monitoring and improving. That commitment is what allows FlashPay users to send money with confidence, every single time.'
+        'When you trust an app with your money, security cannot be an afterthought. At FlashPay, every feature is built with the protection of your funds and your data in mind from day one.',
+        'Your PIN and personal information are protected using strong, industry standard encryption practices, the same general approach trusted by banks and financial institutions around the world. Your PIN is never visible to anyone, including our own team.',
+        'Every time you log in or confirm a transaction, FlashPay verifies your identity through multiple layers of protection. This means a single point of failure is never enough to put your account at risk.',
+        'For added convenience and security, FlashPay also supports biometric login using your fingerprint or Face ID. It is fast, simple and adds another layer of protection without slowing you down.',
+        'FlashPay continuously monitors account activity to help protect you from unusual or suspicious behavior, giving you an added layer of peace of mind with every transaction.',
+        'Security is never finished. It is an ongoing commitment we take seriously every single day, because it is the foundation of the trust you place in FlashPay.'
       ]
     },
     'smart-ways-to-save-2026': {
@@ -258,19 +258,18 @@ nav{padding:0 20px}.nav-menu,.nav-actions{display:none}.hamburger{display:flex}
       ]
     },
     'tech-stack-powering-flashpay': {
-      category: 'Behind the Scenes',
+      category: 'Founder Lessons',
       emoji: '📱',
-      title: 'The Tech Stack Powering FlashPay',
+      title: 'Lessons From Building FlashPay on a Single Phone',
       date: 'June 2026',
-      readTime: '7 min read',
+      readTime: '6 min read',
       body: [
-        'Curious what actually powers FlashPay behind the scenes? Here is a technical look at the architecture that handles thousands of transactions reliably.',
-        'The mobile app is built using React Native with Expo, allowing a single codebase to deliver a smooth native experience. Navigation is handled with React Navigation, and all sensitive data on the device is protected using SecureStore.',
-        'On the backend, FlashPay runs on Node.js with the Express framework, deployed on Vercel for fast, reliable hosting. The API handles everything from authentication to transaction processing through a series of well organized route files.',
-        'For the database, FlashPay uses Supabase, a PostgreSQL based platform that provides both a powerful relational database and built in authentication tools.',
-        'Authentication itself relies on JSON Web Tokens, paired with bcrypt for PIN encryption. Every protected route on the backend verifies a valid token before processing any sensitive request.',
-        'Payment integrations connect to VTPass for airtime, data and bill payments, and to Flutterwave and Monnify for bank transfers and wallet funding, giving FlashPay users access to a complete suite of financial services.',
-        'What makes this stack particularly remarkable is where it was built. Every single piece, from the database schema to the JWT middleware, was written and tested entirely on a mobile phone using Termux, proving that powerful technology does not require expensive equipment.'
+        'People are often curious about what it really takes to build a fintech product from nothing but a phone. Rather than a tour of code, here are the real lessons learned along the way.',
+        'The first lesson was that constraints breed creativity. Building entirely on a phone meant every decision had to be deliberate. There was no room for wasted effort, so each feature was carefully thought through before a single line was written.',
+        'The second lesson was to lean on proven, trusted tools rather than experimenting for its own sake. When real money and real users are involved, reliability matters far more than novelty.',
+        'The third lesson was the value of strong partners. FlashPay works with established, trusted providers such as Supabase for secure data infrastructure, and VTpass, Flutterwave and Monnify for payments and bill processing. Partnering with proven providers allowed the team to focus energy on building a great experience for users, rather than reinventing core financial infrastructure from scratch.',
+        'The fourth lesson was that security and reliability are not features to add later, they are the foundation everything else is built on. Every decision along the way was made with user trust as the top priority.',
+        'The biggest lesson of all is simple. Ambitious products do not require expensive equipment or a large team to begin. They require a clear problem worth solving and the discipline to keep showing up, one day at a time.'
       ]
     },
     'expand-west-africa': {
