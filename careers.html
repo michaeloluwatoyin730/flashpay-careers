@@ -1681,6 +1681,10 @@
       rows += '<td><span class="status-badge status-' + a.status + '">' + a.status + '</span></td>';
       rows += '<td>';
       rows += '<button class="action-btn btn-view" onclick="viewApp(' + i + ')">View</button> ';
+      if (a.cv_url) {
+        rows += '<a class="action-btn btn-view" href="' + a.cv_url + '" target="_blank" style="text-decoration:none;display:inline-block">📄 CV</a> ';
+      }
+      rows += '<button class="action-btn btn-view" onclick="downloadPDF(' + i + ')">PDF</button> ';
       rows += '<button class="action-btn btn-approve" onclick="changeStatus(\'' + a.id + '\', \'approved\')">✓</button> ';
       rows += '<button class="action-btn btn-reject" onclick="changeStatus(\'' + a.id + '\', \'rejected\')">✗</button>';
       rows += '</td></tr>';
@@ -1707,7 +1711,7 @@
   // VIEW APPLICATION
   function viewApp(i) {
     var a = applications[i];
-    alert('NAME: ' + a.full_name + ' | EMAIL: ' + a.email + ' | PHONE: ' + a.phone + ' | ROLE: ' + a.role + ' | EXPERIENCE: ' + a.experience + ' | SKILLS: ' + a.skills + ' | PORTFOLIO: ' + (a.portfolio || 'N/A') + ' | MOTIVATION: ' + a.motivation);
+    alert('NAME: ' + a.full_name + ' | EMAIL: ' + a.email + ' | PHONE: ' + a.phone + ' | ROLE: ' + a.role + ' | EXPERIENCE: ' + a.experience + ' | SKILLS: ' + a.skills + ' | PORTFOLIO: ' + (a.portfolio || 'N/A') + ' | CV: ' + (a.cv_url ? 'Uploaded' : 'Not uploaded') + ' | MOTIVATION: ' + a.motivation);
   }
 
   // SUBMIT APPLICATION
@@ -1716,6 +1720,30 @@
     var btn = document.querySelector('.submit-btn');
     btn.textContent = 'Submitting...';
     btn.disabled = true;
+
+    var cvFile = document.getElementById('cvFile').files[0];
+    var cvUrl = null;
+
+    if (cvFile) {
+      try {
+        var fileExt = cvFile.name.split('.').pop();
+        var fileName = Date.now() + '_' + Math.random().toString(36).substring(2,8) + '.' + fileExt;
+        var uploadRes = await fetch(SUPABASE_URL + '/storage/v1/object/cv-uploads/' + fileName, {
+          method: 'POST',
+          headers: {
+            'apikey': SUPABASE_KEY,
+            'Authorization': 'Bearer ' + SUPABASE_KEY,
+            'Content-Type': cvFile.type
+          },
+          body: cvFile
+        });
+        if (uploadRes.ok) {
+          cvUrl = SUPABASE_URL + '/storage/v1/object/public/cv-uploads/' + fileName;
+        }
+      } catch(uploadErr) {
+        console.log('CV upload error:', uploadErr);
+      }
+    }
 
     var app = {
       full_name: document.getElementById('fullName').value,
@@ -1726,6 +1754,7 @@
       experience: document.getElementById('experience').value,
       portfolio: document.getElementById('portfolio').value,
       motivation: document.getElementById('motivation').value,
+      cv_url: cvUrl,
       status: 'new'
     };
 
@@ -1747,6 +1776,42 @@
     btn.disabled = false;
   }
 
+  // DOWNLOAD PDF
+  function downloadPDF(i) {
+    var a = applications[i];
+    var doc = new jspdf.jsPDF();
+    doc.setFontSize(18);
+    doc.text('FlashPay Job Application', 20, 20);
+    doc.setFontSize(11);
+    var y = 35;
+    var lines = [
+      'Name: ' + a.full_name,
+      'Email: ' + a.email,
+      'Phone: ' + a.phone,
+      'Role: ' + a.role,
+      'Experience: ' + a.experience,
+      'Skills: ' + a.skills,
+      'Portfolio: ' + (a.portfolio || 'N/A'),
+      'Status: ' + a.status,
+      'Date Applied: ' + new Date(a.created_at).toLocaleDateString(),
+      ''
+    ];
+    lines.forEach(function(line) {
+      doc.text(line, 20, y);
+      y += 8;
+    });
+    doc.text('Motivation:', 20, y);
+    y += 8;
+    var motivationLines = doc.splitTextToSize(a.motivation || '', 170);
+    doc.text(motivationLines, 20, y);
+    y += motivationLines.length * 7 + 10;
+    if (a.cv_url) {
+      doc.setTextColor(0,0,255);
+      doc.textWithLink('View Uploaded CV', 20, y, { url: a.cv_url });
+    }
+    doc.save(a.full_name.replace(/\s+/g,'_') + '_application.pdf');
+  }
+
   // SHOW TOAST
   function showToast(msg) {
     var t = document.getElementById('toast');
@@ -1760,5 +1825,6 @@
   updateAdminStats();
 
 </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </body>
 </html>
