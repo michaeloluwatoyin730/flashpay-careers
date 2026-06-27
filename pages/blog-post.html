@@ -338,7 +338,7 @@ nav{padding:0 20px}.nav-menu,.nav-actions{display:none}.hamburger{display:flex}
     html += '<h1 class="article-title">' + article.title + '</h1>';
     html += '<div class="article-meta">';
     html += '<div class="article-avatar">FP</div>';
-    html += '<span>FlashPay Team</span><span>•</span><span>' + article.date + '</span><span>•</span><span>' + article.readTime + '</span>';
+    html += '<span>' + (article.author || 'FlashPay Team') + '</span><span>•</span><span>' + article.date + '</span><span>•</span><span>' + article.readTime + '</span>';
     html += '</div>';
     html += '<div class="article-image">' + article.emoji + '</div>';
     html += '<div class="article-body">';
