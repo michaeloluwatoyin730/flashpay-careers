@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://flashpay.ebusinessplatform.com.ng/sitemap.xml
